@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost and Found - Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f2f5;
+        }
+
+        .page-wrapper {
+            display: flex;
+            width: 1000px;
+            max-width: 95vw;
+            min-height: 700px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .side-image {
+            flex: 1.2;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(76, 75, 162, 0.7) 100%),
+                url('lost_found_community_joy_1769861242415.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .side-content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .side-content p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .registration-container {
+            width: 450px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 950px) {
+            .page-wrapper {
+                width: 450px;
+                max-width: 95vw;
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .side-image {
+                display: none;
+            }
+
+            .registration-container {
+                width: 100%;
+                padding: 30px;
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .radio-label {
+            display: inline;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="side-image">
+            <div class="side-content">
+                <h2>Bring Back the Smile!</h2>
+                <p>Join a community where honesty lives. Help others find what they've lost, and let the community help
+                    you in return. It only takes a minute to make a difference.</p>
+            </div>
+        </div>
+        <div class="registration-container">
+            <div class="logo-section">
+                <div class="logo">🔍</div>
+                <h1>Lost & Found</h1>
+                <p class="subtitle">Create an account to get started</p>
+            </div>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="gender-group">
+                        <input type="radio" id="male" name="gender" value="male">
+                        <label for="male" class="radio-label">Male</label>
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female" class="radio-label">Female</label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="otpGroup" style="display: none;">
+                    <label for="otp">Enter OTP (Sent to your email)</label>
+                    <input type="text" id="otp" name="otp" placeholder="Enter 6-digit OTP" maxlength="6">
+                </div>
+
+                <button type="submit" class="btn-register" id="submitBtn">Register</button>
+
+                <div class="error-message" id="errorMsg"></div>
+                <div class="success-message" id="successMsg"></div>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const registrationForm = document.getElementById('registrationForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const otpGroup = document.getElementById('otpGroup');
+        const submitBtn = document.getElementById('submitBtn');
+
+        let isOtpSent = false;
+
+        registrationForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            if (!isOtpSent) {
+                // Step 1: Send registration data and trigger OTP
+                const formData = new FormData(registrationForm);
+
+                try {
+                    const response = await fetch('register.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        isOtpSent = true;
+                        successMsg.textContent = data.message;
+                        successMsg.style.display = 'block';
+
+                        // Show OTP field and change button text
+                        otpGroup.style.display = 'block';
+                        submitBtn.textContent = 'Verify OTP';
+
+                        // Disable initial fields to prevent changes during verification
+                        registrationForm.querySelectorAll('input:not(#otp)').forEach(input => input.readOnly = true);
+                        registrationForm.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
+                    } else {
+                        errorMsg.textContent = data.message;
+                        errorMsg.style.display = 'block';
+                    }
+                } catch (error) {
+                    errorMsg.textContent = 'Registration failed. Please try again.';
+                    errorMsg.style.display = 'block';
+                }
+            } else {
+                // Step 2: Verify OTP
+                const otp = document.getElementById('otp').value;
+                const email = document.getElementById('email').value;
+
+                if (!otp || otp.length !== 6) {
+                    errorMsg.textContent = 'Please enter a valid 6-digit OTP';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    const formData = new FormData();
+                    formData.append('email', email);
+                    formData.append('otp', otp);
+
+                    const response = await fetch('verify_otp.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        successMsg.textContent = data.message;
+                        successMsg.style.display = 'block';
+
+                        // Redirect after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else {
+                        errorMsg.textContent = data.message;
+                        errorMsg.style.display = 'block';
+                    }
+                } catch (error) {
+                    errorMsg.textContent = 'Verification failed. Please try again.';
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
