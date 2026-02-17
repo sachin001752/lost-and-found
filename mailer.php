@@ -20,9 +20,9 @@ function sendOTPMail($toEmail, $toName, $otp) {
     $logMessage = "Time: " . date('Y-m-d H:i:s') . " | To: $toEmail ($toName) | OTP: $otp" . PHP_EOL;
     file_put_contents('otp_log.txt', $logMessage, FILE_APPEND);
 
-    $mail = new PHPMailer(true);
-
     try {
+        $mail = new PHPMailer(true);
+
         // Server settings
         $mail->SMTPDebug = 0; // Disable debug for live use
         $mail->isSMTP();
@@ -31,7 +31,7 @@ function sendOTPMail($toEmail, $toName, $otp) {
         $mail->Username   = trim(SMTP_USER);
         $mail->Password   = str_replace(' ', '', trim(SMTP_PASS));
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
+        $mail->Port       = SMTP_PORT;
         $mail->CharSet    = 'UTF-8';
 
         // Bypassing SSL verification for local testing

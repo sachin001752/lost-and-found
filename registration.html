@@ -71,10 +71,12 @@
 
         @media (max-width: 950px) {
             .page-wrapper {
-                width: 450px;
-                max-width: 95vw;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
                 flex-direction: column;
-                min-height: auto;
+                min-height: 100vh;
             }
 
             .side-image {
@@ -83,7 +85,17 @@
 
             .registration-container {
                 width: 100%;
-                padding: 30px;
+                padding: 40px 20px;
+                flex: 1;
+            }
+
+            .gender-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #camera-video {
+                max-width: 90%;
             }
         }
 
@@ -207,6 +219,82 @@
             margin-top: 10px;
             display: none;
         }
+
+        .photo-capture-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #eee;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid #667eea;
+            position: relative;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .photo-btn {
+            padding: 8px 15px;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .photo-btn:hover {
+            background: #eee;
+        }
+
+        #camera-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #camera-video {
+            width: 100%;
+            max-width: 500px;
+            max-height: 70vh;
+            border-radius: 15px;
+            background: black;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .camera-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
     </style>
 </head>
 
@@ -214,7 +302,7 @@
     <div class="page-wrapper">
         <div class="side-image">
             <div class="side-content">
-                <h2>Bring Back the Smile!</h2>
+                <h2>Bring Back the Smile !</h2>
                 <p>Join a community where honesty lives. Help others find what they've lost, and let the community help
                     you in return. It only takes a minute to make a difference.</p>
             </div>
@@ -238,11 +326,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-
-                <div class="form-group">
                     <label>Gender</label>
                     <div class="gender-group">
                         <input type="radio" id="male" name="gender" value="male">
@@ -250,6 +333,27 @@
                         <input type="radio" id="female" name="gender" value="female">
                         <label for="female" class="radio-label">Female</label>
                     </div>
+                </div>
+
+                <div class="photo-capture-container">
+                    <label>Profile Photo</label>
+                    <div class="photo-preview" id="photo-preview-box">
+                        <span id="photo-placeholder">👤</span>
+                        <img id="preview-img" style="display: none;">
+                    </div>
+                    <div class="photo-buttons">
+                        <button type="button" class="photo-btn" id="take-photo-btn"><i class="fas fa-camera"></i> Take a
+                            Photo</button>
+                        <button type="button" class="photo-btn" id="upload-photo-btn"><i class="fas fa-upload"></i> Add
+                            a Photo</button>
+                    </div>
+                    <input type="file" id="user_photo" name="user_photo" accept="image/*" style="display: none;">
+                    <input type="hidden" id="captured_photo" name="captured_photo">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
 
                 <div class="form-group" id="otpGroup" style="display: none;">
@@ -269,12 +373,107 @@
         </div>
     </div>
 
-    <script>
-        const registrationForm = document.getElementById('registrationForm');
+    <!-- Camera Modal -->
+    <div id="camera-modal">
+        <video id="camera-video" autoplay playsinline></video>
+        <div class="camera-controls">
+            <button type="button" class="btn-register" id="capture-btn"
+                style="width: auto; padding: 10px 30px;">Capture</button>
+            <button type="button" class="btn-register" id="close-camera-btn"
+                style="width: auto; padding: 10px 30px; background: #666;">Close</button>
+        </div>
+        <canvas id="camera-canvas" style="display: none;"></canvas>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>const registrationForm = document.getElementById('registrationForm');
         const errorMsg = document.getElementById('errorMsg');
         const successMsg = document.getElementById('successMsg');
         const otpGroup = document.getElementById('otpGroup');
         const submitBtn = document.getElementById('submitBtn');
+
+        // Photo Handling
+        const takePhotoBtn = document.getElementById('take-photo-btn');
+        const uploadPhotoBtn = document.getElementById('upload-photo-btn');
+        const userPhotoInput = document.getElementById('user_photo');
+        const capturedPhotoInput = document.getElementById('captured_photo');
+        const photoPreviewBox = document.getElementById('photo-preview-box');
+        const photoPlaceholder = document.getElementById('photo-placeholder');
+        const previewImg = document.getElementById('preview-img');
+
+        const cameraModal = document.getElementById('camera-modal');
+        const cameraVideo = document.getElementById('camera-video');
+        const cameraCanvas = document.getElementById('camera-canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const closeCameraBtn = document.getElementById('close-camera-btn');
+
+        let stream = null;
+
+        uploadPhotoBtn.onclick = () => userPhotoInput.click();
+
+        userPhotoInput.onchange = function () {
+            const file = this.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    photoPlaceholder.style.display = 'none';
+                    capturedPhotoInput.value = ''; // Clear captured photo if file is uploaded
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+            ;
+
+        takePhotoBtn.onclick = async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: true
+                });
+                cameraVideo.srcObject = stream;
+                cameraModal.style.display = 'flex';
+            }
+
+            catch (err) {
+                alert('Could not access camera: ' + err.message);
+            }
+        }
+
+            ;
+
+        captureBtn.onclick = () => {
+            const context = cameraCanvas.getContext('2d');
+            cameraCanvas.width = cameraVideo.videoWidth;
+            cameraCanvas.height = cameraVideo.videoHeight;
+            context.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
+
+            const imageData = cameraCanvas.toDataURL('image/jpeg');
+            previewImg.src = imageData;
+            previewImg.style.display = 'block';
+            photoPlaceholder.style.display = 'none';
+            capturedPhotoInput.value = imageData;
+            userPhotoInput.value = ''; // Clear file input if photo is captured
+
+            stopCamera();
+        }
+
+            ;
+
+        closeCameraBtn.onclick = stopCamera;
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            cameraModal.style.display = 'none';
+        }
 
         let isOtpSent = false;
 
@@ -285,7 +484,6 @@
             successMsg.style.display = 'none';
 
             if (!isOtpSent) {
-                // Step 1: Send registration data and trigger OTP
                 const formData = new FormData(registrationForm);
 
                 try {
@@ -300,24 +498,27 @@
                         isOtpSent = true;
                         successMsg.textContent = data.message;
                         successMsg.style.display = 'block';
-
-                        // Show OTP field and change button text
                         otpGroup.style.display = 'block';
                         submitBtn.textContent = 'Verify OTP';
 
-                        // Disable initial fields to prevent changes during verification
                         registrationForm.querySelectorAll('input:not(#otp)').forEach(input => input.readOnly = true);
                         registrationForm.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
-                    } else {
+                        document.querySelectorAll('.photo-btn').forEach(btn => btn.disabled = true);
+                    }
+
+                    else {
                         errorMsg.textContent = data.message;
                         errorMsg.style.display = 'block';
                     }
-                } catch (error) {
+                }
+
+                catch (error) {
                     errorMsg.textContent = 'Registration failed. Please try again.';
                     errorMsg.style.display = 'block';
                 }
-            } else {
-                // Step 2: Verify OTP
+            }
+
+            else {
                 const otp = document.getElementById('otp').value;
                 const email = document.getElementById('email').value;
 
@@ -343,15 +544,20 @@
                         successMsg.textContent = data.message;
                         successMsg.style.display = 'block';
 
-                        // Redirect after 2 seconds
                         setTimeout(() => {
                             window.location.href = 'login.html';
-                        }, 2000);
-                    } else {
+                        }
+
+                            , 2000);
+                    }
+
+                    else {
                         errorMsg.textContent = data.message;
                         errorMsg.style.display = 'block';
                     }
-                } catch (error) {
+                }
+
+                catch (error) {
                     errorMsg.textContent = 'Verification failed. Please try again.';
                     errorMsg.style.display = 'block';
                 }

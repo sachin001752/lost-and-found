@@ -19,8 +19,19 @@ try {
     $stmt = $pdo->prepare("SELECT email FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $user = $stmt->fetch();
-    $currentUserEmail = $user ? $user['email'] : '';
-} catch (PDOException $e) {}
+    
+    if (!$user) {
+        // User exists in session but not in database (e.g., table was cleared)
+        session_destroy();
+        echo json_encode(['success' => false, 'message' => 'User account no longer exists. Please login again.']);
+        exit;
+    }
+    
+    $currentUserEmail = $user['email'];
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    exit;
+}
 
 try {
     // Build query - use LEFT JOIN and COALESCE to ensure data remains visible even if user is gone
@@ -33,8 +44,16 @@ try {
         LEFT JOIN users u ON i.user_id = u.id
     ";
     
-    $conditions = [];
-    $params = [];
+    // MANDATORY FILTER: Only show items belonging to the logged-in user
+    if (!empty($currentUserEmail)) {
+        $conditions[] = "(i.user_id = ? OR i.user_email = ?)";
+        $params[] = $_SESSION['user_id'];
+        $params[] = $currentUserEmail;
+    } else {
+        // If for some reason we can't find the user email, filter by ID at least
+        $conditions[] = "i.user_id = ?";
+        $params[] = $_SESSION['user_id'];
+    }
     
     // Filter by type
     if ($type !== 'all' && in_array($type, ['lost', 'found'])) {
@@ -42,17 +61,8 @@ try {
         $params[] = $type;
     }
     
-    // Filter by user for "my posts" - Link by EMAIL instead of transient user_id
-    if ($myPosts && !empty($currentUserEmail)) {
-        $conditions[] = "(i.user_id = ? OR i.user_email = ?)";
-        $params[] = $_SESSION['user_id'];
-        $params[] = $currentUserEmail;
-    }
-    
-    // Add WHERE clause if conditions exist
-    if (!empty($conditions)) {
-        $sql .= " WHERE " . implode(" AND ", $conditions);
-    }
+    // Add WHERE clause (always needed now due to mandatory filtering)
+    $sql .= " WHERE " . implode(" AND ", $conditions);
     
     // Order by newest first
     $sql .= " ORDER BY i.created_at DESC";

@@ -52,10 +52,34 @@ try {
     // Generate 6-digit OTP
     $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     
+    // Handle Photo Upload
+    $photoPath = null;
+    $uploadDir = 'uploads/profiles/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    if (!empty($_POST['captured_photo'])) {
+        // Handle captured photo (base64)
+        $img = $_POST['captured_photo'];
+        $img = str_replace('data:image/jpeg;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $fileName = 'profile_' . time() . '_' . uniqid() . '.jpg';
+        $photoPath = $uploadDir . $fileName;
+        file_put_contents($photoPath, $data);
+    } elseif (isset($_FILES['user_photo']) && $_FILES['user_photo']['error'] === UPLOAD_ERR_OK) {
+        // Handle file upload
+        $ext = pathinfo($_FILES['user_photo']['name'], PATHINFO_EXTENSION);
+        $fileName = 'profile_' . time() . '_' . uniqid() . '.' . $ext;
+        $photoPath = $uploadDir . $fileName;
+        move_uploaded_file($_FILES['user_photo']['tmp_name'], $photoPath);
+    }
+    
     // Insert user as unverified
     $stmt = $pdo->prepare("
-        INSERT INTO users (fullname, email, password, gender, otp, is_verified) 
-        VALUES (?, ?, ?, ?, ?, 0)
+        INSERT INTO users (fullname, email, password, gender, photo, otp, is_verified) 
+        VALUES (?, ?, ?, ?, ?, ?, 0)
     ");
     
     $stmt->execute([
@@ -63,6 +87,7 @@ try {
         $email,
         $hashedPassword,
         $gender,
+        $photoPath,
         $otp
     ]);
 
@@ -70,9 +95,7 @@ try {
     $mailResult = sendOTPMail($email, $fullname, $otp);
     
     if ($mailResult === true) {
-        $message = (MAIL_MODE === 'test') 
-            ? 'Registration successful! (TEST MODE: OTP saved to otp_log.txt)' 
-            : 'Registration successful! OTP has been sent to your email.';
+        $message = 'Registration successful! OTP has been sent to your email.';
             
         echo json_encode([
             'success' => true,
@@ -82,11 +105,11 @@ try {
         // Mail failed but user is created in DB (they can retry or check logs)
         echo json_encode([
             'success' => true, 
-            'message' => "Registration successful, but email failed. Error: $mailResult. (Check otp_log.txt if you are in development)."
+            'message' => "Registration successful, but email failed to send. Please contact support or check your connection."
         ]);
     }
     
-} catch (PDOException $e) {
+} catch (Throwable $e) {
 
     echo json_encode([
         'success' => false,

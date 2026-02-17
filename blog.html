@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India's Success Stories - Lost & Found</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .navbar-logo {
+            font-size: 28px;
+        }
+
+        .navbar-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 700;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            z-index: 1001;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .blog-header h1 {
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blog-header p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-date {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .blog-title {
+            font-size: 22px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .blog-card:hover .blog-title {
+            color: #667eea;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s;
+        }
+
+        .blog-card:hover .read-more {
+            gap: 12px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 32px;
+            color: #333;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .modal-body {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .modal-body h4 {
+            margin: 25px 0 10px;
+            color: #764ba2;
+            font-size: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #1a1c23;
+            background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1920&h=600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 80px 30px 40px;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 28, 35, 0.9), rgba(26, 28, 35, 0.85));
+            z-index: 0;
+        }
+
+        .footer-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(93, 138, 252, 0.6);
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #5d8afc, transparent);
+            border-radius: 2px;
+        }
+
+        .footer-section p {
+            font-size: 14.5px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-section ul li a:hover {
+            color: #5d8afc;
+            transform: translateX(5px);
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .footer-contact i {
+            width: 20px;
+            color: #5d8afc;
+        }
+
+        .footer-contact a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .copyright-text {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 10px 20px;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex-direction: column;
+                justify-content: center;
+                padding: 40px;
+                gap: 20px;
+                z-index: 1000;
+            }
+
+            .nav-menu.show {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-link {
+                font-size: 18px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-section ul li a {
+                justify-content: center;
+            }
+
+            .blog-header h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <span class="navbar-logo">🔍</span>
+                <div>
+                    <h1 class="navbar-title">Lost & Found</h1>
+                    <p class="navbar-subtitle">Community Portal</p>
+                </div>
+            </a>
+
+            <div class="hamburger" onclick="toggleNavMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <ul class="nav-menu" id="main-nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="blog.html" class="nav-link active"><i class="fas fa-blog"></i> Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="community.html" class="nav-link"><i class="fas fa-users"></i> Community</a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="blog-header">
+            <h1>India's Lost & Found Stories</h1>
+            <p>Real stories of honesty and reunions from our community across the country.</p>
+        </div>
+
+        <div class="blog-grid" id="blog-grid">
+            <!-- Blog Card 1 -->
+            <div class="blog-card" onclick="openStory(0)">
+                <div class="blog-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&q=80&w=800');">
+                </div>
+                <div class="blog-content">
+                    <span class="blog-date">Mumbai, Feb 12, 2026</span>
+                    <h2 class="blog-title">The Mumbai Local Miracle</h2>
+                    <p class="blog-excerpt">How Rohan, a college student, found a wallet in a crowded local train and
+                        it led to a life-saving reunion.</p>
+                    <a href="javascript:void(0)" class="read-more">Read Full Story <i
+                            class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Blog Card 2 -->
+            <div class="blog-card" onclick="openStory(1)">
+                <div class="blog-image"
+                    style="background-image: url(https://images.unsplash.com/photo-1512163143273-bde0e3cc7407?q=80&w=800);">
+                </div>
+                <div class="blog-content">
+                    <span class="blog-date">New Delhi, Feb 08, 2026</span>
+                    <h2 class="blog-title">Delhi Park's Diamond Heart</h2>
+                    <p class="blog-excerpt">Mrs. Kapoor found an engagement ring during her morning walk in Lodhi
+                        Gardens
+                        and didn't rest until she found its owner.</p>
+                    <a href="javascript:void(0)" class="read-more">Read Full Story <i
+                            class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Blog Card 3 -->
+            <div class="blog-card" onclick="openStory(2)">
+                <div class="blog-image"
+                    style="background-image: url(https://images.unsplash.com/photo-1597074866923-dc0589150358?q=80&w=800);">
+                </div>
+                <div class="blog-content">
+                    <span class="blog-date">Ahmedabad, Jan 30, 2026</span>
+                    <h2 class="blog-title">The Board Exam Guardian</h2>
+                    <p class="blog-excerpt">Lost just minutes before his exam, Aryan's hall ticket was returned by a
+                        kind rickshaw driver through our app.</p>
+                    <a href="javascript:void(0)" class="read-more">Read Full Story <i
+                            class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Blog Card 4 -->
+            <div class="blog-card" onclick="openStory(3)">
+                <div class="blog-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=800');">
+                </div>
+                <div class="blog-content">
+                    <span class="blog-date">Bangalore, Jan 22, 2026</span>
+                    <h2 class="blog-title">Bangalore Techie to the Rescue</h2>
+                    <p class="blog-excerpt">Sheru, a pet retriever, was lost for 3 days until a software engineer
+                        spotted
+                        him near the Electronic City.</p>
+                    <a href="javascript:void(0)" class="read-more">Read Full Story <i
+                            class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Full Story -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header" id="modalHeader">
+                <!-- Image goes here -->
+            </div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-search"></i> About Lost & Found</h3>
+                    <p>Lost & Found is a community-driven platform dedicated to helping people recover their lost items
+                        and return found belongings to their rightful owners.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html?tab=post-lost"><i class="fas fa-plus-circle"></i> Post Lost Item</a>
+                        </li>
+                        <li><a href="index.html?tab=post-found"><i class="fas fa-check-circle"></i> Post Found Item</a>
+                        </li>
+                        <li><a href="index.html?tab=view-lost"><i class="fas fa-search"></i> View Lost Items</a></li>
+                        <li><a href="index.html?tab=view-found"><i class="fas fa-box-open"></i> View Found Items</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="how_it_works.html"><i class="fas fa-info-circle"></i> How It Works</a></li>
+                        <li><a href="safety_tips.html"><i class="fas fa-shield-alt"></i> Safety Tips</a></li>
+                        <li><a href="privacy_policy.html"><i class="fas fa-user-secret"></i> Privacy Policy</a></li>
+                        <li><a href="terms_of_service.html"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                        </li>
+                        <li><a href="contact_support.html"><i class="fas fa-headset"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="footer-contact">
+                        <span><i class="fas fa-envelope"></i> <a
+                                href="mailto:modisachin705@gmail.com">modisachin705@gmail.com</a></span>
+                        <span><i class="fas fa-phone"></i> <a href="tel:+919510951619">+91 9510951619</a></span>
+                        <span><i class="fas fa-clock"></i> 24/7 Support</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider">
+                <div class="copyright-text">&copy; 2026 Lost & Found. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const stories = [
+            {
+                title: "The Mumbai Local Miracle",
+                image: "https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&q=80&w=800",
+                content: `<h4>The Incident</h4>
+                    <p>It was a typical Monday morning in Mumbai. Rohan, a final year engineering student, was heading to his college in a crowded local train. Just as he was getting off at Dadar station, he spotted a brown leather wallet stuck between the seats.</p>
+                    
+                    <h4>The Struggle</h4>
+                    <p>The wallet was thick, containing not just cash (around ₹12,000) but also a PAN card, an Aadhaar card, and several credit cards belonging to a Mr. Suresh Mehta. Rohan knew this wasn't just money; it was someone's life in that wallet. He tried calling the numbers on the cards but couldn't reach anyone.</p>
+                    
+                    <h4>The Reunion</h4>
+                    <p>Remembering the Lost & Found app, Rohan posted a 'Found Item' entry with a photo of the ID cards but hiding the sensitive details. Within 2 hours, Mr. Mehta, a bank manager who was in a state of panic, contacted him. Mr. Mehta was so relieved that he offered Rohan a reward, which Rohan politely declined, saying the smile on the manager's face was enough.</p>`
+            },
+            {
+                title: "Delhi Park's Diamond Heart",
+                image: "https://images.unsplash.com/photo-1512163143273-bde0e3cc7407?q=80&w=800",
+                content: `<h4>The Morning Walk</h4>
+                    <p>Mrs. Kapoor, a retired school teacher, was enjoying her routine walk at Delhi's Lodhi Garden. Near a bench where she usually sits, she found a small velvet box half-buried in the grass. Inside was a beautiful diamond engagement ring.</p>
+                    
+                    <h4>The Search</h4>
+                    <p>Mrs. Kapoor spent the next two days asking the park guards if anyone had reported a loss. Finally, her grandson suggested using the Lost & Found portal. She posted the details but kept the description of the box secret as a 'verification test'.</p>
+                    
+                    <h4>The Emotional Moment</h4>
+                    <p>A young woman named Priya contacted her via the app. She had lost her ring just a day before her wedding. When she described the distinctive blue velvet box with a silver lining, Mrs. Kapoor knew she had found the owner. Priya and her fiancé visited Mrs. Kapoor's home, and the reunion was so emotional that it brought tears to everyone's eyes.</p>`
+            },
+            {
+                title: "The Board Exam Guardian",
+                image: "https://images.unsplash.com/photo-1597074866923-dc0589150358?q=80&w=800",
+                content: `<h4>A Student's Nightmare</h4>
+                    <p>Aryan, a 10th-grade student in Ahmedabad, was on his way to his first board exam. In the rush of taking out his phone to pay the rickshaw fare, his hall ticket fell out of his bag. He only noticed it when he reached the exam center gate.</p>
+                    
+                    <h4>A Kind Stranger</h4>
+                    <p>The rickshaw driver, Ismail Bhai, found the document on the floorboard of his auto after a few kilometers. He didn't know Aryan's school, but he had heard about the 'Lost & Found Ahmedabad' community from a previous passenger. He quickly stopped at a roadside stall and asked the shopkeeper's son to post a photo of the hall ticket on the app.</p>
+                    
+                    <h4>Reunion in Time</h4>
+                    <p>Aryan's teacher, who was also using the app for another matter, saw the post. He immediately matched the name and verified it. Aryan's father rushed to meet Ismail Bhai at a designated landmark. Aryan received his hall ticket just 10 minutes before the bell rang. Ismail Bhai didn't just return a paper; he saved a year of Aryan's life.</p>`
+            },
+            {
+                title: "Bangalore Techie to the Rescue",
+                image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=800",
+                content: `<h4>Sheru Goes Missing</h4>
+                    <p>In the bustling neighborhood of HSR Layout, Bangalore, a Golden Retriever named Sheru got spooked by Diwali crackers and ran out of the gate. His owners, the Reddys, were heartbroken and searched the entire city for three days.</p>
+                    
+                    <h4>Spotted near E-City</h4>
+                    <p>Karthik, a software engineer, was driving home from his night shift when he saw a tired, collar-less dog sitting near a tea stall in Electronic City, almost 8km away from HSR. Karthik, a dog lover, took a photo and uploaded it to our platform under 'Found Item'.</p>
+                    
+                    <h4>The Joy of Reunion</h4>
+                    <p>The Reddy family, who had posted a 'Lost Pet' alert on the same app, received an instant match notification. Within an hour, they reached Electronic City. Sheru's tail didn't stop wagging for ten minutes when he saw his family. Karthik says it was the best way to start his weekend.</p>`
+            }
+        ];
+
+        function openStory(index) {
+            const story = stories[index];
+            document.getElementById('modalHeader').innerHTML = `<img src="${story.image}" alt="${story.title}">`;
+            document.getElementById('modalTitle').textContent = story.title;
+            document.getElementById('modalBody').innerHTML = story.content;
+            document.getElementById('storyModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('storyModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('storyModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await checkLogin();
+        });
+
+        async function checkLogin() {
+            const user = localStorage.getItem('loggedInUser');
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            try {
+                const response = await fetch('get_items.php');
+                const data = await response.json();
+                if (!data.success) {
+                    localStorage.removeItem('loggedInUser');
+                    localStorage.removeItem('userName');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        function toggleNavMenu() {
+            const menu = document.getElementById('main-nav-menu');
+            menu.classList.toggle('show');
+        }
+    </script>
+</body>
+
+</html>

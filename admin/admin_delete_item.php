@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../db_config.php';
 
 header('Content-Type: application/json');
 
@@ -44,8 +44,11 @@ try {
     $stmt->execute([':id' => $itemId]);
     
     // Delete photo file if exists
-    if (!empty($item['photo']) && file_exists($item['photo'])) {
-        unlink($item['photo']);
+    if (!empty($item['photo'])) {
+        $photoPath = '../' . $item['photo'];
+        if (file_exists($photoPath)) {
+            unlink($photoPath);
+        }
     }
     
     echo json_encode([

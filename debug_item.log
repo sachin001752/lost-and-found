@@ -1,0 +1,75 @@
+2026-02-12 12:44:44 - === New API Request ===
+2026-02-12 12:44:44 - Session User ID: 37
+2026-02-12 12:44:44 - Data - Type: lost, Title: xsws
+2026-02-12 12:44:44 - Item inserted successfully. ID: 13
+2026-02-12 12:45:40 - === New API Request ===
+2026-02-12 12:45:40 - Session User ID: 37
+2026-02-12 12:45:40 - Data - Type: found, Title: jhbkahvbh
+2026-02-12 12:45:40 - File upload detected: Array
+(
+    [name] => 20260209_155355.jpg (1).jpeg
+    [type] => image/jpeg
+    [tmp_name] => C:\xampp\tmp\phpCAAB.tmp
+    [error] => 0
+    [size] => 4957648
+)
+
+2026-02-12 12:45:40 - Error: Directory not writable, attempting chmod
+2026-02-12 12:45:40 - File uploaded successfully to: C:\xampp\htdocs\kalri/uploads/698dbd648e9b1_1770896740.jpeg
+2026-02-12 12:45:40 - Item inserted successfully. ID: 14
+2026-02-13 12:25:30 - === New API Request ===
+2026-02-13 12:25:30 - Session User ID: 47
+2026-02-13 12:25:30 - Data - Type: found, Title: wallet
+2026-02-13 12:25:30 - File upload detected: Array
+(
+    [name] => 20260209_155433.jpg.jpeg
+    [type] => image/jpeg
+    [tmp_name] => C:\xampp\tmp\phpB153.tmp
+    [error] => 0
+    [size] => 5630973
+)
+
+2026-02-13 12:25:30 - File uploaded successfully to: C:\xampp\htdocs\kalri/uploads/698f0a2ae64f0_1770981930.jpeg
+2026-02-13 12:25:30 - Item inserted successfully. ID: 16
+2026-02-13 12:43:11 - === New API Request ===
+2026-02-13 12:43:11 - Session User ID: 47
+2026-02-13 12:43:11 - Data - Type: lost, Title: wallet
+2026-02-13 12:43:11 - File upload detected: Array
+(
+    [name] => 20260209_155427.jpg.jpeg
+    [type] => image/jpeg
+    [tmp_name] => C:\xampp\tmp\phpDEEE.tmp
+    [error] => 0
+    [size] => 5068221
+)
+
+2026-02-13 12:43:11 - File uploaded successfully to: C:\xampp\htdocs\kalri/uploads/698f0e4f318de_1770982991.jpeg
+2026-02-13 12:43:11 - Item inserted successfully. ID: 17
+2026-02-15 18:16:58 - === New API Request ===
+2026-02-15 18:16:58 - Session User ID: 49
+2026-02-15 18:16:58 - Data - Type: lost, Title: wallet
+2026-02-15 18:16:58 - File upload detected: Array
+(
+    [name] => ChatGPT Image Jan 5, 2026, 04_01_50 PM.png
+    [type] => image/png
+    [tmp_name] => C:\xampp\tmp\php21FB.tmp
+    [error] => 0
+    [size] => 321681
+)
+
+2026-02-15 18:16:58 - File uploaded successfully to: C:\xampp\htdocs\kalri/uploads/6991ff8a26ea2_1771175818.png
+2026-02-15 18:16:58 - Item inserted successfully. ID: 18
+2026-02-17 06:05:15 - === New API Request ===
+2026-02-17 06:05:15 - Session User ID: 50
+2026-02-17 06:05:15 - Data - Type: found, Title: wallet
+2026-02-17 06:05:15 - File upload detected: Array
+(
+    [name] => 20260209_155427.jpg.jpeg
+    [type] => image/jpeg
+    [tmp_name] => C:\xampp\tmp\php3335.tmp
+    [error] => 0
+    [size] => 5068221
+)
+
+2026-02-17 06:05:15 - File uploaded successfully to: C:\xampp\htdocs\kalri/uploads/6993f70b22762_1771304715.jpeg
+2026-02-17 06:05:15 - Item inserted successfully. ID: 19

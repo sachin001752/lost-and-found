@@ -5,20 +5,10 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'lost_and_found');
 
-// SMTP configuration for PHPMailer
-// Set MAIL_MODE to 'live' for actual emails, or 'test' to only log OTPs locally
-define('MAIL_MODE', 'test'); 
-
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'modisachin705@gmail.com'); // Put your Gmail address here
-define('SMTP_PASS', 'yazr lkhi goza apdt'); // Put your Gmail App Password here
-define('SMTP_FROM_EMAIL', 'modisachin705@gmail.com');
-
-define('SMTP_FROM_NAME', 'Kalri Lost & Found');
-
-
-
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Create database connection
 try {
@@ -39,8 +29,12 @@ try {
     ]));
 }
 
-// Start session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// SMTP Configuration
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_PORT', 465);
+define('SMTP_USER', 'modisachin705@gmail.com');
+define('SMTP_PASS', 'yazrlkhigozaapdt'); // Updated from git history
+define('SMTP_FROM_EMAIL', 'modisachin705@gmail.com');
+define('SMTP_FROM_NAME', 'Lost & Found');
+define('MAIL_MODE', 'live'); // Set to 'live' to send real emails
 ?>

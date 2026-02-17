@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Lost & Found</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .navbar-logo {
+            font-size: 28px;
+        }
+
+        .navbar-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 700;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: -40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid #f0f0f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #f0f4ff;
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .leaderboard {
+            margin-top: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .leaderboard h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-item:hover {
+            background: #f8f9fa;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rank {
+            font-weight: 800;
+            color: #667eea;
+            width: 30px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .score {
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex-direction: column;
+                justify-content: center;
+                padding: 40px;
+                gap: 20px;
+                z-index: 1000;
+            }
+
+            .nav-menu.show {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+                z-index: 1001;
+            }
+
+            .nav-link {
+                font-size: 18px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .founder-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px;
+            }
+
+            .founder-image {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Founder Section Styles */
+        .founder-section {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        .founder-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .founder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .founder-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top center;
+            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            margin-right: 50px;
+            flex-shrink: 0;
+        }
+
+        .founder-info {
+            flex: 1;
+        }
+
+        .founder-role {
+            color: #667eea;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .founder-name {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .founder-bio {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .founder-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .founder-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f4ff;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .founder-social a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #1a1c23;
+            background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1920&h=600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 80px 30px 40px;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 28, 35, 0.9), rgba(26, 28, 35, 0.85));
+            z-index: 0;
+        }
+
+        .footer-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(93, 138, 252, 0.6);
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #5d8afc, transparent);
+            border-radius: 2px;
+        }
+
+        .footer-section p {
+            font-size: 14.5px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-section ul li a:hover {
+            color: #5d8afc;
+            transform: translateX(5px);
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .footer-contact i {
+            width: 20px;
+            color: #5d8afc;
+        }
+
+        .footer-contact a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .copyright-text {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-section ul li a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <span class="navbar-logo">🔍</span>
+                <div>
+                    <h1 class="navbar-title">Lost & Found</h1>
+                    <p class="navbar-subtitle">Community Portal</p>
+                </div>
+            </a>
+
+            <div class="hamburger" onclick="toggleNavMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <ul class="nav-menu" id="main-nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="blog.html" class="nav-link"><i class="fas fa-blog"></i> Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="community.html" class="nav-link active"><i class="fas fa-users"></i> Community</a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to the Community</h1>
+        <p>Join thousands of members who help each other every day. Your contribution makes a difference!</p>
+    </div>
+
+    <div class="container">
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Mutual Trust</h3>
+                <p>Built on the foundation of honesty and helping strangers in need.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Secure Platform</h3>
+                <p>Your privacy and safety are our top priorities during every interaction.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Fast Alerts</h3>
+                <p>Real-time notifications help connect losers and finders instantly.</p>
+            </div>
+        </div>
+
+        <div class="founder-section">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 32px; color: #333;">Meet the Founder</h2>
+            <div class="founder-card">
+                <img src="sachin_modi.jpg" alt="Sachin Modi - Founder" class="founder-image">
+                <div class="founder-info">
+                    <span class="founder-role">Founder & Visionary</span>
+                    <h3 class="founder-name">Sachin Modi</h3>
+                    <p class="founder-bio">
+                        "Driven by a passion to connect communities and restore lost smiles.
+                        My mission is to create a trusted platform where honesty prevails and every lost item finds its
+                        way home."
+                    </p>
+                    <div class="founder-social">
+                        <a href="https://www.linkedin.com/in/YOUR_PROFILE" target="_blank" title="LinkedIn"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/YOUR_PROFILE" target="_blank" title="Instagram"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="mailto:sachin@example.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNavMenu() {
+            const menu = document.getElementById('main-nav-menu');
+            menu.classList.toggle('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            const isLoggedIn = await checkLogin();
+            if (!isLoggedIn) return;
+
+            const userEmail = localStorage.getItem('loggedInUser');
+            if (userEmail) {
+                const navMenu = document.getElementById('main-nav-menu');
+                const loginLink = navMenu.querySelector('a[href="login.html"]');
+
+                if (loginLink) {
+                    // Update Login link to Profile/Dashboard
+                    loginLink.href = 'index.html'; // Redirects to dashboard/profile
+                    loginLink.innerHTML = '<i class="fas fa-user-circle"></i> Profile';
+
+                    // Add Logout Link
+                    const logoutLi = document.createElement('li');
+                    logoutLi.className = 'nav-item';
+                    logoutLi.innerHTML = '<a href="#" onclick="logoutUser()" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>';
+                    navMenu.appendChild(logoutLi);
+                }
+            }
+        });
+
+        async function checkLogin() {
+            const user = localStorage.getItem('loggedInUser');
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            try {
+                const response = await fetch('get_items.php');
+                const data = await response.json();
+                if (!data.success) {
+                    localStorage.removeItem('loggedInUser');
+                    localStorage.removeItem('userName');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('userName');
+            window.location.href = 'logout.php';
+        }
+    </script>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-search"></i> About Lost & Found</h3>
+                    <p>Lost & Found is a community-driven platform dedicated to helping people recover their lost items
+                        and return found belongings to their rightful owners.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html?tab=post-lost"><i class="fas fa-plus-circle"></i> Post Lost Item</a>
+                        </li>
+                        <li><a href="index.html?tab=post-found"><i class="fas fa-check-circle"></i> Post Found Item</a>
+                        </li>
+                        <li><a href="index.html?tab=view-lost"><i class="fas fa-search"></i> View Lost Items</a></li>
+                        <li><a href="index.html?tab=view-found"><i class="fas fa-box-open"></i> View Found Items</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="how_it_works.html"><i class="fas fa-info-circle"></i> How It Works</a></li>
+                        <li><a href="safety_tips.html"><i class="fas fa-shield-alt"></i> Safety Tips</a></li>
+                        <li><a href="privacy_policy.html"><i class="fas fa-user-secret"></i> Privacy Policy</a></li>
+                        <li><a href="terms_of_service.html"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                        </li>
+                        <li><a href="contact_support.html"><i class="fas fa-headset"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="footer-contact">
+                        <span><i class="fas fa-envelope"></i> <a
+                                href="mailto:modisachin705@gmail.com">modisachin705@gmail.com</a></span>
+                        <span><i class="fas fa-phone"></i> <a href="tel:+919510951619">+91 9510951619</a></span>
+                        <span><i class="fas fa-clock"></i> 24/7 Support</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider">
+                <div class="copyright-text">&copy; 2026 Lost & Found. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../db_config.php';
 
 header('Content-Type: application/json');
 
@@ -19,9 +19,8 @@ try {
                 users.id,
                 users.fullname as name,
                 users.email,
-                users.dob,
                 users.gender,
-                users.address,
+                users.photo,
                 users.verified,
                 users.created_at,
                 COUNT(CASE WHEN items.type = 'lost' THEN 1 END) as lost_count,
@@ -43,9 +42,8 @@ try {
             'name' => $user['name'],
             'email' => $user['email'],
             'phone' => 'N/A', // Phone is stored in items, not users table
-            'dob' => $user['dob'],
             'gender' => $user['gender'],
-            'address' => $user['address'],
+            'photo' => $user['photo'],
             'verified' => (bool)$user['verified'],
             'lost_count' => (int)$user['lost_count'],
             'found_count' => (int)$user['found_count'],

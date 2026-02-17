@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../db_config.php';
 
 header('Content-Type: application/json');
 
@@ -20,7 +20,7 @@ try {
     $status = isset($_GET['status']) ? $_GET['status'] : '';
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
     
-    // Build query
+    // Original query restored: Admin can see ALL user submissions
     $sql = "SELECT 
                 items.*, 
                 users.fullname as user_name,
